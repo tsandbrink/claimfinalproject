@@ -29,9 +29,6 @@ public class Flock {
     @JoinColumn(name="flock_id")
     private List<Chicken> chickensInFlock;
 
-    private List<Chicken> flockFamilyTree;
-
-
     //Constructor, Getters, and Setters --------//
     public Flock() {
     }
@@ -50,14 +47,6 @@ public class Flock {
 
     public void setChickensInFlock(List<Chicken> chickensInFlock) {
         this.chickensInFlock = chickensInFlock;
-    }
-
-    public List<Chicken> getFlockFamilyTree() {
-        return flockFamilyTree;
-    }
-
-    public void setFlockFamilyTree(List<Chicken> flockFamilyTree) {
-        this.flockFamilyTree = flockFamilyTree;
     }
 
     
