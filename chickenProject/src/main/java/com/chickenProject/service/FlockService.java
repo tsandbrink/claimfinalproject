@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@Service
 public class FlockService {
     @Autowired
     private FlockRepo flockRepo;
@@ -56,9 +57,11 @@ public class FlockService {
 	    flockRepo.deleteById(id);
 	}
 
-	public Flock addContentToCart(Integer flockID, Chicken chicken){
+	public Flock addChickenToFlock(Integer flockID, Chicken chicken){
 		Flock flock = findById(flockID);
 		flock.getChickensInFlock().add(chicken);
 		return flockRepo.save(flock);
 	}
+
+	
 }

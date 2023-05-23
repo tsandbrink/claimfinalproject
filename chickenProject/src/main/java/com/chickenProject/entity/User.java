@@ -30,8 +30,8 @@ public class User {
      private String userName;
      @Column(name = "password", nullable = false)
      private String password;
-     @Column(name = "userEmail", unique = true, nullable = false)
-     private String userEmail;
+     @Column(name = "email", unique = true, nullable = false)
+     private String email;
      @Column(name = "zipCode", nullable = false)
      private String zipCode;
      
@@ -83,15 +83,15 @@ public class User {
      }
  
      public String getUserEmail() {
-         return userEmail;
+         return email;
      }
  
-     public void setUserEmail(String userEmail) {
-         this.userEmail = userEmail;
+     public void setUserEmail(String email) {
+         this.email = email;
      }
  
      @Override
      public String toString() {
-         return "User [id=" + id + ", userName=" + userName + ", password=" + password + ", email=" + userEmail + ", zipCode=" + zipCode + "]";
+         return "User [id=" + id + ", userName=" + userName + ", password=" + password + ", email=" + email + ", zipCode=" + zipCode + "]";
      }
 }

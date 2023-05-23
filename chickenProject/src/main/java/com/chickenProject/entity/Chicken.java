@@ -56,29 +56,14 @@ public class Chicken {
     @JoinColumn(name = "father_ID")
     private Chicken father;
 
-    @ManyToOne (fetch = FetchType.LAZY)
+    /*@ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "child_ID")
-    private List<Chicken> parents;
+    private List<Chicken> parents;*/
 
     @OneToMany
     @JoinColumn(name="parent_ID")
     private List<Chicken> children;
 
-    //Key is Age in weeks -- //Value is feed in oz for that age
-    private Map<Integer, Double> feedNeedsPerWeekAge = Map.ofEntries(
-        Map.entry(0, 1.7),
-        Map.entry(2, 4.9),
-        Map.entry(4, 9.1),
-        Map.entry(6, 12.0),
-        Map.entry(8, 12.7),
-        Map.entry(10, 13.4),
-        Map.entry(12, 14.1),
-        Map.entry(14, 14.8),
-        Map.entry(16, 15.2),
-        Map.entry(18, 15.9),
-        Map.entry(20, 17.6),
-        Map.entry(21, 24.7) //21 weeks is considered an adult
-    );
 
     public Chicken() {
     }
@@ -149,13 +134,13 @@ public class Chicken {
         this.father = father;
     }
 
-    public List<Chicken> getParents() {
+    /*public List<Chicken> getParents() {
         return parents;
     }
 
     public void setParents(List<Chicken> parents) {
         this.parents = parents;
-    }
+    }*/
 
     public List<Chicken> getChildren() {
         return children;
@@ -165,9 +150,7 @@ public class Chicken {
         this.children = children;
     }
 
-    public Map<Integer, Double> getFeedNeedsPerWeekAge() {
-        return feedNeedsPerWeekAge;
-    }
+    
     
 
 }

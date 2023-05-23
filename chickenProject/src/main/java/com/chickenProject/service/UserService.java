@@ -11,6 +11,7 @@ import javax.security.auth.login.AccountNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@Service
 public class UserService {
     // YOU ONLY AUTOWIRE YOUR REPO OF YOUR OBJECT IN YOUR SERVIES!!!
 	// NOTHING ELSE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
