@@ -155,4 +155,26 @@ public class FlockController {
             }
     
         }
+
+        @RequestMapping(
+            value="/getChickensInFlock/{flockId}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method = RequestMethod.POST
+        )
+        public ResponseEntity<Object> getChickensInFlock(@PathVariable Integer flockId, @RequestBody Chicken chicken) {
+    
+            try {
+                Flock flock = flockService.addChickenToFlock(flockId, chicken);
+    
+                return new ResponseEntity<Object>(flock, HttpStatus.OK);
+            } catch (Exception e) {
+                System.out.println(e);
+                return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            } catch (Error e) {
+                System.out.println(e);
+                return new ResponseEntity<Object>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+    
+        }
 }

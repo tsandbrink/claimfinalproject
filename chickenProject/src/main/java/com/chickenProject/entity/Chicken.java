@@ -1,10 +1,9 @@
 package com.chickenProject.entity;
 
 import java.time.LocalDate;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
+
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 // Annotate Objects with Entity, lets project know its a Object from the DB
 @Entity
@@ -48,21 +48,30 @@ public class Chicken {
     @Column(name = "isDead", nullable = false)
     private Boolean isDead;
 
-    @OneToOne
-    @JoinColumn(name = "mother_ID")
-    private Chicken mother;
+    @Column(name = "motherName")
+    private String motherName;
 
-    @OneToOne
-    @JoinColumn(name = "father_ID")
-    private Chicken father;
+    @Column(name = "fatherName")
+    private String fatherName;
 
-    /*@ManyToOne (fetch = FetchType.LAZY)
-    @JoinColumn(name = "child_ID")
-    private List<Chicken> parents;*/
+    @Column(name = "mother_id")
+    private Integer motherId;
 
-    @OneToMany
-    @JoinColumn(name="parent_ID")
-    private List<Chicken> children;
+    @Column(name = "father_id")
+    private Integer fatherId;
+
+    @Column(name = "egg_laid")
+    private Integer eggsLaid;
+
+    @Column(name = "zip_code")
+    private String zipCode;
+
+    @Column(name = "state")
+    private String state;
+
+
+    @Transient //Tells the database to ignore this field - must be done explicitly
+    private List<TreeNode> treeNodes = new ArrayList<TreeNode>();
 
 
     public Chicken() {
@@ -118,39 +127,68 @@ public class Chicken {
         this.isDead = isDead;
     }
 
-    public Chicken getMother() {
-        return mother;
+
+    public String getMotherName() {
+        return motherName;
     }
 
-    public void setMother(Chicken mother) {
-        this.mother = mother;
+    public void setMotherName(String motherName) {
+        this.motherName = motherName;
     }
 
-    public Chicken getFather() {
-        return father;
+    public String getFatherName() {
+        return fatherName;
     }
 
-    public void setFather(Chicken father) {
-        this.father = father;
+    public void setFatherName(String fatherName) {
+        this.fatherName = fatherName;
     }
 
-    /*public List<Chicken> getParents() {
-        return parents;
+    public Integer getMotherId() {
+        return motherId;
     }
 
-    public void setParents(List<Chicken> parents) {
-        this.parents = parents;
-    }*/
-
-    public List<Chicken> getChildren() {
-        return children;
+    public void setMotherId(Integer motherId) {
+        this.motherId = motherId;
     }
 
-    public void setChildren(List<Chicken> children) {
-        this.children = children;
+    public Integer getFatherId() {
+        return fatherId;
     }
 
-    
-    
+    public void setFatherId(Integer fatherId) {
+        this.fatherId = fatherId;
+    }
 
+    public List<TreeNode> getTreeNodes() {
+        return treeNodes;
+    }
+
+    public void setTreeNodes(List<TreeNode> treeNodes) {
+        this.treeNodes = treeNodes;
+    }
+
+    public Integer getEggsLaid() {
+        return eggsLaid;
+    }
+
+    public void setEggsLaid(Integer eggsLaid) {
+        this.eggsLaid = eggsLaid;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
 }

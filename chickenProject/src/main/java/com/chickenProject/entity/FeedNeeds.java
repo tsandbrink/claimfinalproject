@@ -23,7 +23,7 @@ public class FeedNeeds {
     private Long ageInWeeks;
 
     @Column(name = "feedNeed")
-    private Double feedNeed;
+    private Double feedNeed; //In Ounces!!
 
    /* private Map<Integer, Double> feedNeedsPerWeekAge = Map.ofEntries(
         Map.entry(0, 1.7),

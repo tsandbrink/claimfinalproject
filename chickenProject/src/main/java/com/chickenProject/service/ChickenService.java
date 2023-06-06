@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import com.chickenProject.repo.ChickenRepo;
 import com.chickenProject.entity.Chicken;
+import com.chickenProject.entity.TreeNode;
 import com.chickenProject.entity.Chicken;
-
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +57,26 @@ public class ChickenService {
         
     }
 
+    public Chicken findByName(String chickenName) throws Error {
+        
+    	// Find by is another predefined repo function, you can always find by the primary key
+    	// when you use findById, its good practice to use the isPresent in an if check first
+    	// It will tell you if a object was actually found, with true or false values, true if found, false is not
+    	// It will always return an Optional Object, the chicken will be there if found, null if not
+    	// If found, give the object back with a .get() to grab it off the Optional object
+    	
+        if (chickenRepo.findByName(chickenName)!=null){
+            return chickenRepo.findByName(chickenName);
+        } else {
+            throw new Error("No chicken by thah name present");
+        }
+            
+        
+        
+    
+        
+    }
+
 	public List<Chicken> findAll() {
 		return chickenRepo.findAll();
 	}
@@ -71,7 +91,53 @@ public class ChickenService {
         return (daysBetween/7);
     }
 
+    public List<Chicken> findAncestors(Chicken chicken){
+        List<Chicken> ancestors = new ArrayList<Chicken>();
+        Integer currentGeneration = 1;
+        Integer firstPosition = 1;
+        TreeNode firsTreeNode = new TreeNode(currentGeneration, firstPosition);
+        ancestors.add(chicken);
+        chicken.getTreeNodes().add(firsTreeNode);
+        ancestors = findAncestors2(chicken, ancestors, currentGeneration);
+        return ancestors;
+    }
+
+    public List<Chicken> findAncestors2(Chicken chicken, List<Chicken> ancestors, Integer currentGeneration){
+        
+        if ((chicken.getFatherId() == null || chicken.getFatherId() == 0) && (chicken.getMotherId() == null || chicken.getFatherId() == 0)){
+            
+            return ancestors;
+        } else {
+            currentGeneration += 1;
+            Integer currentMotherPosition = 2 * chicken.getTreeNodes().get(chicken.getTreeNodes().size()-1).getPosition();
+            Integer currentFatherPosition = 2 * chicken.getTreeNodes().get(chicken.getTreeNodes().size()-1).getPosition() -1;
+            TreeNode motherNode = new TreeNode(currentGeneration, currentMotherPosition);
+            TreeNode fatherNode = new TreeNode(currentGeneration, currentFatherPosition);
+            Chicken mother = findById(chicken.getMotherId());
+            Chicken father = findById(chicken.getFatherId());
+            mother.getTreeNodes().add(motherNode);
+            father.getTreeNodes().add(fatherNode);
+            if(!ancestors.contains(father)){
+                ancestors.add(father);
+            }
+            if(!ancestors.contains(mother)){
+                ancestors.add(mother);
+            }
+            for (Chicken chicken2 : ancestors) {
+                System.out.println(chicken2.getName());
+            }
+            findAncestors2(mother, ancestors, currentGeneration);
+            findAncestors2(father, ancestors, currentGeneration);
+        }
+       
+        
+        return ancestors;
+    }
     
+    // public Chicken addEgg(Chicken chicken, Integer eggsToAdd){
+    //     chicken.setEggsLaid(chicken.getEggsLaid() + eggsToAdd);
+    //     return update(chicken);
+    // }
 
     //method to get feed needs of a chick
     // getFeedNeeds(chicken){

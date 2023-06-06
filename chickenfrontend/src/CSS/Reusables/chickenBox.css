@@ -1,0 +1,75 @@
+.chicken-box {
+    border: 10px solid black;
+    border-radius: 10px;
+    height: 30%;
+    min-height: 150px;
+    width: 50%;
+    justify-content: left;
+    background-color: firebrick;
+    padding: 10px;
+    color: black;
+}
+
+.dead-chicken-box {
+    border: 10px solid black;
+    border-radius: 15px;
+    height: 30%;
+    min-height: 100px;
+    width: 300px;
+    min-width: 300px;
+    justify-content: center;
+    background-color: gray;
+    padding: 10px;
+    color: black;
+}
+
+.male-chicken-box {
+    border: 10px solid black;
+    border-radius: 15px;
+    height: 30%;
+    min-height: 100px;
+    width: 300px;
+    min-width: 300px;
+    justify-content: center;
+    background-color: skyblue;
+    padding: 10px;
+    color: black;
+}
+
+.female-chicken-box {
+    border: 10px solid black;
+    border-radius: 15px;
+    height: 30%;
+    min-height: 100px;
+    width: 300px;
+    min-width: 300px;
+    justify-content: center;
+    background-color: pink;
+    padding: 10px;
+    color: black;
+}
+
+.ghost-chicken-box {
+    height: 30%;
+    min-height: 100px;
+    width: 300px;
+    min-width: 300px;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0);
+    padding: 10px;
+    color: rgba(0, 0, 0, 0);
+}
+
+
+
+.photo-box {
+    border: 10px solid black;
+    border-radius: 10px;
+    height: 30%;
+    min-height: 150px;
+    width: 30%;
+    justify-content: center;
+    
+    background-color: firebrick;
+    padding: 10px;
+  }

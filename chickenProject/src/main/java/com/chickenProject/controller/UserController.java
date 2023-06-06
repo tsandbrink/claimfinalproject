@@ -43,12 +43,14 @@ public class UserController {
     // Request body is encrypted, always send password through a post request
     public ResponseEntity<Object> signUp(@RequestBody User user) {
         try {
-
+            System.out.println("here");
             Flock userFlock = flockService.save(new Flock());
-
+          //  System.out.println("here2");
+            //user.setUserFlock(userFlock);
+            //System.out.println("here3");
             User savedUser = userService.save(user);
-
-            savedUser = userService.addFlockToUser(savedUser, userFlock);
+            System.out.println("here4");
+            savedUser = userService.addFlockToUser(user, userFlock);
             return new ResponseEntity<Object>(savedUser, HttpStatus.CREATED);
         } catch(DataIntegrityViolationException e) {
             System.out.println("Dupe userName");
@@ -110,13 +112,14 @@ public class UserController {
 
     @RequestMapping(
         value="/findUserByUserName/{userName}",
-        produces = MediaType.APPLICATION_JSON_VALUE,
+        //produces = MediaType.APPLICATION_JSON_VALUE,
         method = RequestMethod.GET
     )
     public ResponseEntity<Object> findUserByEmail(@PathVariable String userName) {
 
         try {
             User foundUser = userService.findByUserName(userName);
+            System.out.println(foundUser.toString());
             return new ResponseEntity<Object>(foundUser, HttpStatus.OK);
         } catch (Exception e) {
             System.out.println(e);

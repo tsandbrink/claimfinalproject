@@ -1,7 +1,5 @@
 package com.chickenProject.entity;
 
-
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,11 +29,15 @@ public class User {
      @Column(name = "password", nullable = false)
      private String password;
      @Column(name = "email", unique = true, nullable = false)
-     private String email;
+     private String userEmail;
      @Column(name = "zipCode", nullable = false)
      private String zipCode;
+     @Column(name = "state")
+     private String state;
      
-     @OneToOne (cascade = CascadeType.ALL)
+     
+
+    @OneToOne (cascade = CascadeType.ALL)
      @JoinColumn(name = "flock_ID")
      private Flock userFlock;
  
@@ -83,15 +85,23 @@ public class User {
      }
  
      public String getUserEmail() {
-         return email;
+         return userEmail;
      }
  
      public void setUserEmail(String email) {
-         this.email = email;
+         this.userEmail = email;
      }
  
+     public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
      @Override
      public String toString() {
-         return "User [id=" + id + ", userName=" + userName + ", password=" + password + ", email=" + email + ", zipCode=" + zipCode + "]";
+         return "User [id=" + id + ", userName=" + userName + ", password=" + password + ", email=" + userEmail + ", zipCode=" + zipCode + "]";
      }
 }

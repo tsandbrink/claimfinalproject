@@ -26,7 +26,7 @@ public class Flock {
 	private Integer id;
 
     @OneToMany
-    @JoinColumn(name="flock_id")
+    @JoinColumn(name="flock_id", referencedColumnName="id")
     private List<Chicken> chickensInFlock;
 
     //Constructor, Getters, and Setters --------//

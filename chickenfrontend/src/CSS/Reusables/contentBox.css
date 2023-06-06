@@ -1,0 +1,10 @@
+.content-box {
+    border: 10px solid goldenrod;
+    border-radius: 1px;
+    height: 50%;
+    min-height: 450px;
+    width: 40%;
+    justify-content: center;
+    overflow: auto;
+    overflow-wrap: normal;
+}

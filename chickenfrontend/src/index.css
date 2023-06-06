@@ -17,3 +17,149 @@ code {
   height: 500px;
   
 }
+
+body #root{
+  height: 100vh;
+  width: 100vw;
+}
+
+*:not(head){
+  display: flex;
+}
+
+
+
+.flex-row{
+  flex-direction: row;
+}
+
+.flex-column{
+  flex-direction: column;
+}
+
+.container{
+  height: 100vh;
+  width: 100vw;
+}
+
+.center{
+  justify-content: center;
+  align-items: center;
+}
+
+.margin{
+  margin: 10px;
+}
+
+.right{
+  justify-content: right;
+}
+
+.fill{
+  height: 100%;
+  width: 100%;
+}
+
+.header{
+  height: 10%;
+  width: 100%;
+  color: black;
+  background-color: firebrick;
+  border: 1px black;
+}
+
+.mainBody{
+  
+  color: black;
+  
+}
+
+
+.background {
+  background: url(https://images.pexels.com/photos/4348410/pexels-photo-4348410.jpeg?auto=compress&cs=tinysrgb&w=600) no-repeat center fixed;
+  background-size: cover;
+}
+
+.background2 {
+  background-color:rgb(212, 213, 184);
+}
+
+.colorScheme{
+  color: black;
+  background-color: firebrick;
+}
+
+.colorScheme2{
+  color: black;
+  background-color: white;
+}
+
+.underline{
+  text-decoration: underline;
+}
+
+.cursorPointer{
+  cursor: pointer;
+}
+
+.main-content {
+  height: 90%;
+  justify-content: center;
+  align-items: center;
+}
+
+.scroll{
+  overflow-y: scroll;
+  flex-wrap: wrap;
+  overflow: none;
+  scrollbar-gutter: stable;
+}
+
+.box {
+  border: 10px solid black;
+  border-radius: 10px;
+  justify-content: center;
+  padding: 10px;
+  background-color: firebrick;
+}
+
+.box2 {
+  border: 10px solid black;
+  border-radius: 10px;
+  justify-content: center;
+  padding: 10px;
+  background-color:rgb(212, 213, 184);
+}
+
+.scroll2{
+  overflow-y: scroll;
+  overflow-wrap:wrap;
+  flex-wrap:wrap;
+  overflow-x:none;
+  overflow: wrap;
+  scrollbar-gutter: stable;
+}
+
+.pageHeader{
+  height: 30%;
+  width: 100%;
+}
+
+.pageBody{
+  height:70%;
+  width: 100%;
+}
+
+.border{
+  border: 1px solid black;
+}
+
+.quarter-width{
+  width: 25%;
+}
+
+.half-width{
+  width: 50%;
+}
+
+
