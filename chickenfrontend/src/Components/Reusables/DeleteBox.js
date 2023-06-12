@@ -29,9 +29,9 @@ function DeleteBox(props) {
             <div className= 'flex-column'> 
                 <div className='flex-row'>
                    
-                    <button className = 'colorScheme margin' role = 'button' onClick={deleteUser}>YES</button>
+                    <button className = 'colorScheme margin button' role = 'button' onClick={deleteUser}>YES</button>
                     
-                    <button className = 'colorScheme margin' role = 'button' onClick={retainUser}>NO</button>
+                    <button className = 'colorScheme margin button' role = 'button' onClick={retainUser}>NO</button>
                 </div>
             </div>
         </div>

@@ -47,6 +47,10 @@ body #root{
   align-items: center;
 }
 
+.centerTop{
+  align-items: center;
+}
+
 .margin{
   margin: 10px;
 }
@@ -109,9 +113,8 @@ body #root{
 }
 
 .scroll{
-  overflow-y: scroll;
-  flex-wrap: wrap;
-  overflow: none;
+  overflow: scroll;
+  overflow-wrap:wrap;
   scrollbar-gutter: stable;
 }
 
@@ -136,18 +139,18 @@ body #root{
   overflow-wrap:wrap;
   flex-wrap:wrap;
   overflow-x:none;
-  overflow: wrap;
+  overflow: scroll;
   scrollbar-gutter: stable;
 }
 
 .pageHeader{
-  height: 30%;
-  width: 100%;
+  height: 10%;
+  width: 33%;
 }
 
 .pageBody{
   height:70%;
-  width: 100%;
+  width: 66%;
 }
 
 .border{
@@ -162,4 +165,24 @@ body #root{
   width: 50%;
 }
 
+.two-third-width{
+  width: 66%;
+}
 
+.flockBox {
+  border: 10px solid black;
+  border-radius: 10px;
+  
+  padding: 10px;
+  background-color:rgb(212, 213, 184);
+}
+
+.positionFixed{
+  position: fixed;
+  z-index: 1;
+}
+
+.button:hover {
+  background-color: firebrick
+  
+}

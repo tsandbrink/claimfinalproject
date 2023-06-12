@@ -14,7 +14,7 @@
     border: 10px solid black;
     border-radius: 15px;
     height: 30%;
-    min-height: 100px;
+    min-height: 130px;
     width: 300px;
     min-width: 300px;
     justify-content: center;
@@ -27,7 +27,7 @@
     border: 10px solid black;
     border-radius: 15px;
     height: 30%;
-    min-height: 100px;
+    min-height: 130px;
     width: 300px;
     min-width: 300px;
     justify-content: center;
@@ -40,7 +40,7 @@
     border: 10px solid black;
     border-radius: 15px;
     height: 30%;
-    min-height: 100px;
+    min-height: 130px;
     width: 300px;
     min-width: 300px;
     justify-content: center;
@@ -51,11 +51,11 @@
 
 .ghost-chicken-box {
     height: 30%;
-    min-height: 100px;
+    min-height: 130px;
     width: 300px;
     min-width: 300px;
     justify-content: center;
-    background-color: rgba(0, 0, 0, 0);
+    background-color: rgba(0, 0, 0, .1);
     padding: 10px;
     color: rgba(0, 0, 0, 0);
 }

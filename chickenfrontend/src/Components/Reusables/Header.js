@@ -24,6 +24,7 @@ function Header(props) {
           <a className='header-link' href='/Flock'>VIEW MY FLOCK</a>
           <a className = 'header-link' href="/AddChicken"> ADD CHICKEN TO FLOCK</a>
           <a className = 'header-link' href="/Eggs"> ADD EGGS LAID</a>
+          <a className='header-link' href="/BreedInfo">BREED INFO</a>
         </div>
         <div className='third-width right'>
           <div className='header-link underline cursorPointer' onClick={signOut}> SIGN OUT</div>

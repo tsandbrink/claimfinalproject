@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.CascadeType;
 
 @Entity
 @Table(name="Flock")
@@ -25,7 +26,7 @@ public class Flock {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-    @OneToMany
+    @OneToMany (cascade = CascadeType.ALL)
     @JoinColumn(name="flock_id", referencedColumnName="id")
     private List<Chicken> chickensInFlock;
 

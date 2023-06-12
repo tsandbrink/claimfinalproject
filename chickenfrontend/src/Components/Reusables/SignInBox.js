@@ -65,7 +65,7 @@ function SignInBox(props) {
                                 <div className= 'margin center'>PASSWORD: </div>
                                 <input className = 'colorScheme2' name="password" type = "password" onChange={changeHandler}/>
                                 <div className = 'margin center'>
-                                <button className = 'colorScheme2' role = 'button' onClick={submitHandler}>SUBMIT!</button>
+                                <button className = 'colorScheme2 button' role = 'button' onClick={submitHandler}>SUBMIT!</button>
                                 </div>
                             </div>
                         </div>

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.chickenProject.service.FlockService;
 import com.chickenProject.service.ChickenService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -152,6 +153,102 @@ public class ChickenController {
             Chicken ourChicken = chickenService.findById(id);
             List<Chicken> ancestors = chickenService.findAncestors(ourChicken);
             return new ResponseEntity<Object>(ancestors, HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Error e) {
+            System.out.println(e);
+            return new ResponseEntity<Object>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+    @RequestMapping(
+        value="/getAverageByStateAndBreed/{state}/{breed}",
+        method = RequestMethod.GET
+    )
+    public ResponseEntity<Object> getAverageByStateAndBreed(@PathVariable String state, @PathVariable String breed) {
+
+        try {
+            List<Chicken> searchResults = chickenService.findByStateAndBreed(state, breed);
+            Double eggAverage = chickenService.findAverageEggsPerWeek(searchResults);
+            List<Double> data = new ArrayList<Double>();
+            data.add((double)searchResults.size());
+            data.add(eggAverage);
+            return new ResponseEntity<Object>(data, HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Error e) {
+            System.out.println(e);
+            return new ResponseEntity<Object>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+    @RequestMapping(
+        value="/getAverageByZipCodeAndBreed/{zipCode}/{breed}",
+        method = RequestMethod.GET
+    )
+    public ResponseEntity<Object> getAverageByZipCodeAndBreed(@PathVariable String zipCode, @PathVariable String breed) {
+
+        try {
+            List<Chicken> searchResults = chickenService.findByZipCodeAndBreed(zipCode, breed);
+            Double eggAverage = chickenService.findAverageEggsPerWeek(searchResults);
+            List<Double> data = new ArrayList<Double>();
+            data.add((double)searchResults.size());
+            data.add(eggAverage);
+            return new ResponseEntity<Object>(data, HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Error e) {
+            System.out.println(e);
+            return new ResponseEntity<Object>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+    @RequestMapping(
+        value="/getAverageByBreed/{breed}",
+        method = RequestMethod.GET
+    )
+    public ResponseEntity<Object> getAverageByBreed(@PathVariable String breed) {
+
+        try {
+            List<Chicken> searchResults = chickenService.findByBreed(breed);
+            Double eggAverage = chickenService.findAverageEggsPerWeek(searchResults);
+            List<Double> data = new ArrayList<Double>();
+            data.add((double)searchResults.size());
+            data.add(eggAverage);
+            return new ResponseEntity<Object>(data, HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Error e) {
+            System.out.println(e);
+            return new ResponseEntity<Object>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+    @RequestMapping(
+        value="/findChickenEggAverage/{chickenId}",
+        //consumes = MediaType.APPLICATION_JSON_VALUE,
+        method = RequestMethod.GET
+    )
+    public ResponseEntity<Object> findChickenEggAverage(@PathVariable Integer chickenId) {
+
+        try {
+            Chicken chicken = chickenService.findById(chickenId);
+            Long ageInWeeks = chickenService.calculateAgeInWeeks(chicken);
+            Double weeklyAverage = 0.0;
+            if (ageInWeeks > 0){
+                weeklyAverage = (double)chicken.getEggsLaid()/ageInWeeks;
+            } else {
+                weeklyAverage = (double)chicken.getEggsLaid();
+            }
+            return new ResponseEntity<Object>(weeklyAverage, HttpStatus.OK);
         } catch (Exception e) {
             System.out.println(e);
             return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);

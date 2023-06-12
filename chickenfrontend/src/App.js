@@ -16,6 +16,8 @@ import AddChicken from './Components/Pages/AddChicken'
 import Flock from './Components/Pages/Flock'
 import Chicken from './Components/Pages/Chicken'
 import Eggs from './Components/Pages/Eggs'
+import BreedInfo from './Components/Pages/BreedInfo'
+import EditChicken from './Components/Pages/EditChicken'
 
 function App() {
   const[isloading, setIsLoading] = useState(true)
@@ -62,6 +64,8 @@ function App() {
         <Route path = "/Flock" element={<Flock user={user} setUser={setUser} setUpdateUser={setUpdateUser}/>}/>
         <Route path = "/Chicken/:id" element={<Chicken user={user} setUser={setUser} setUpdateUser={setUpdateUser}/>}/>
         <Route path = "/Eggs" element={<Eggs user={user} setUser={setUser} setUpdateUser={setUpdateUser}/>}/>
+        <Route path = "/BreedInfo" element={<BreedInfo user={user} setUser={setUser} setUpdateUser={setUpdateUser}/>}/>
+        <Route path = "/EditChicken/:id" element={<EditChicken user={user} setUser={setUser} setUpdateUser={setUpdateUser}/>}/>
       </Routes>
     </PageWrapper>
   )

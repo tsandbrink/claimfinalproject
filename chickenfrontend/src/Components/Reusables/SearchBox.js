@@ -1,68 +1,48 @@
-import React from 'react'
-import signUpBox from '../../CSS/Reusables/signUpBox.css'
-import { useNavigate } from 'react-router'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { useEffect, useState } from 'react'
 
-function SignUpBox(props) {
+function SearchBox(props) {
   
+    const [searchCriteria, setSearchCriteria] = useState({breed:"", state:""})
     const [errorMessage, setErrorMessage] = useState("")
-
-    const navigator = useNavigate()
+    const [resultMessage, setResultMessage] = useState("")
 
     const changeHandler = (event) => {
         const name = event.target.name;
         const value = event.target.value;
-        const tempUser = { ...props.user };
-        tempUser[name] = value;
-        props.setUser(tempUser)
+        const tempSearchCriteria = { ...searchCriteria };
+        tempSearchCriteria[name] = value;
+        setSearchCriteria(tempSearchCriteria)
     }
-
+  
     const submitHandler = () => {
-        if (props.user.userName !== '' && props.user.password !== '' && props.user.userEmail !=='' && props.user.zipCode !== '' && ValidateEmail() !== false){
-                axios.post("http://localhost:8080/user/signUp", props.user)
-            .then((response) => {
-            localStorage.setItem("userCookie", response.data.userName)
-                props.setUser(response.data)
-                navigator("/Thanks")
-            })
-            .catch((e) => {
-                console.log(e)
-                setErrorMessage("Invalid UserName/Password/Email")
-            })
-        }
-        else{
-            setErrorMessage("Invalid UserName/Password/Email")
-        }
-        
-    }
 
-    function ValidateEmail()
-    {
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-        if(!regex.test(props.user.userEmail))
-        {
-            alert("This is not a valid email address");
-            console.log("invalid Email")
-            return false;
-            }
+        axios.get(`http://localhost:8080/chicken/getAverageByStateAndBreed/${searchCriteria.state}/${searchCriteria.breed}`)
+        
+            .then((response) =>{
+                console.log(response.data)
+                setResultMessage("\nThere are  " + response.data[0] + " " + searchCriteria.breed + " hens kept by MyFlock users in " + searchCriteria.state + ". Users report that on average they lay " + response.data[1].toFixed(2) + " eggs per week.")
+                console.log("Result Found")
+                
+            })
+            .catch((e) =>{
+                
+                setResultMessage("No Results Matched Your Criteria")
+                console.log(e)
+            })
+           
     }
 
     return (
-    <div className= 'flex-column sign-up-box center'>
-        <h1>SIGN UP AND JOIN THE FLOCK</h1>
-        <div className= 'flex-column'> 
+    <div className= 'flex-column sign-up-box third-width center margin'>
+        <h1 className='center margin'>LOOK UP BREED INFO BY STATE:</h1>
+        <div className= 'flex-column fill'> 
             <div className='flex-column'>
-                <div className = 'margin center'>USERNAME: </div>
-                <input className = 'colorScheme2' name="userName" type = "userName" onChange={changeHandler}/>
-                <div className= 'margin center'>PASSWORD: </div>
-                <input className = 'colorScheme2' name="password" type = "password" onChange={changeHandler}/>
-                <div className = 'margin center'>EMAIL: </div>
-                <input className = 'colorScheme2' name="userEmail" type = "userEmail" onChange={changeHandler}/>
-                <div className = 'margin center'>ZIP CODE: </div>
-                <input className = 'colorScheme2' name="zipCode" type = "zipCode" onChange={changeHandler}/>
+                <div className = 'margin center'>BREED NAME: </div>
+                <input className = 'margin colorScheme2' name="breed" type = "breed" onChange={changeHandler}/>
+                
                 <div className = 'margin center'>STATE: </div>
-                <select className = 'colorScheme2' name="state" type = "state" onChange={changeHandler}>
+                <select className = 'margin colorScheme2' name="state" type = "state" onChange={changeHandler}>
                     <option value="AL">Alabama</option>
                     <option value="AK">Alaska</option>
                     <option value="AZ">Arizona</option>
@@ -123,15 +103,19 @@ function SignUpBox(props) {
                 </select>
                 
                 <div className = 'margin center'>
-                <button className = 'colorScheme2 button' role = 'button' onClick={submitHandler}>SUBMIT!</button>
+                <button className = 'colorScheme2 button' role = 'button' onClick={submitHandler}>SEARCH!</button>
                 <div className = 'margin center'> {errorMessage}</div>
                 </div>
             </div>
+            <div className='margin'>
+            {resultMessage}
+            </div>
+            
         </div>
-    
-    
+        
     </div>
+    
   )
 }
 
-export default SignUpBox
+export default SearchBox

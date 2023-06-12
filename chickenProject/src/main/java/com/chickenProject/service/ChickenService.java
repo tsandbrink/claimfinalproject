@@ -99,12 +99,45 @@ public class ChickenService {
         ancestors.add(chicken);
         chicken.getTreeNodes().add(firsTreeNode);
         ancestors = findAncestors2(chicken, ancestors, currentGeneration);
+        int maxRow = 0;
+        for (Chicken c : ancestors) {
+            for (TreeNode t : c.getTreeNodes()) {
+                if (t.getGeneration() > maxRow){
+                    maxRow = t.getGeneration();
+                }
+            }
+        }
+        
+        for (Chicken c : ancestors) {
+            for (TreeNode t : c.getTreeNodes()) {
+                if (t.getGeneration() != maxRow && t.getGeneration()!=1){
+                    int multiplier = 0;
+                      
+                    for (int i = 0; i < (maxRow - t.getGeneration()); i++){
+                        multiplier += Math.pow(2, i);
+                        
+                    }
+                    
+                    int currentPosition = t.getPosition();
+                    int newPosition =  t.getPosition();
+                    for (int i = 1; i < currentPosition; i++){
+                        
+                        newPosition += multiplier;
+                        
+                    }
+                    t.setPosition(newPosition);
+                }
+                
+                    
+                
+            }
+        }
         return ancestors;
     }
 
     public List<Chicken> findAncestors2(Chicken chicken, List<Chicken> ancestors, Integer currentGeneration){
         
-        if ((chicken.getFatherId() == null || chicken.getFatherId() == 0) && (chicken.getMotherId() == null || chicken.getFatherId() == 0)){
+        if ((chicken.getFatherId() == null || chicken.getFatherId() == 0) && (chicken.getMotherId() == null || chicken.getMotherId() == 0)){
             
             return ancestors;
         } else {
@@ -113,25 +146,77 @@ public class ChickenService {
             Integer currentFatherPosition = 2 * chicken.getTreeNodes().get(chicken.getTreeNodes().size()-1).getPosition() -1;
             TreeNode motherNode = new TreeNode(currentGeneration, currentMotherPosition);
             TreeNode fatherNode = new TreeNode(currentGeneration, currentFatherPosition);
-            Chicken mother = findById(chicken.getMotherId());
-            Chicken father = findById(chicken.getFatherId());
-            mother.getTreeNodes().add(motherNode);
-            father.getTreeNodes().add(fatherNode);
-            if(!ancestors.contains(father)){
+            if (chicken.getMotherId() != null && chicken.getMotherId() != 0){
+                Chicken mother = findById(chicken.getMotherId());
+                mother.getTreeNodes().add(motherNode);
+                if(!ancestors.contains(mother)){
+                    ancestors.add(mother);
+                }
+                findAncestors2(mother, ancestors, currentGeneration);
+            }
+            if (chicken.getFatherId() != null && chicken.getFatherId() != 0){
+                Chicken father = findById(chicken.getFatherId());
+                father.getTreeNodes().add(fatherNode);
+                if(!ancestors.contains(father)){
                 ancestors.add(father);
+                findAncestors2(father, ancestors, currentGeneration);
+                }
             }
-            if(!ancestors.contains(mother)){
-                ancestors.add(mother);
-            }
-            for (Chicken chicken2 : ancestors) {
-                System.out.println(chicken2.getName());
-            }
-            findAncestors2(mother, ancestors, currentGeneration);
-            findAncestors2(father, ancestors, currentGeneration);
+            
         }
        
         
         return ancestors;
+    }
+
+    public Double findAverageEggsPerWeek (List<Chicken> chickens) throws Exception{
+        List<Double> averageEggs = new ArrayList<Double>();
+        for (Chicken c : chickens) {
+            if (calculateAgeInWeeks(c) > 0){
+                Double eggsPerWeek = c.getEggsLaid()/(double)calculateAgeInWeeks(c);
+                averageEggs.add(eggsPerWeek);
+            } else {
+                averageEggs.add((double)c.getEggsLaid());
+            }
+            
+        }
+        Double sumOfAverages = 0.0;
+        for (Double d : averageEggs) {
+            sumOfAverages += d;
+        }
+        if (averageEggs.size() > 0){
+            return sumOfAverages/averageEggs.size();
+        } else {
+            throw new Error("No Chickens in List - Can't Divide By 0");
+        }
+        
+    }
+
+    public List<Chicken> findByStateAndBreed(String state, String breed) throws Error{
+        if (chickenRepo.findByStateAndBreed(state, breed).size() > 0){
+            return chickenRepo.findByStateAndBreed(state, breed);
+        }
+        else {
+            throw new Error("No chickens found");
+        }
+    }
+
+    public List<Chicken> findByZipCodeAndBreed(String zipCode, String breed) throws Error{
+        if (chickenRepo.findByZipCodeAndBreed(zipCode, breed).size() > 0){
+            return chickenRepo.findByZipCodeAndBreed(zipCode, breed);
+        }
+        else {
+            throw new Error("No chickens found");
+        }
+    }
+
+    public List<Chicken> findByBreed(String breed) throws Error{
+        if (chickenRepo.findByBreed(breed).size() > 0){
+            return chickenRepo.findByBreed(breed);
+        }
+        else {
+            throw new Error("No chickens found");
+        }
     }
     
     // public Chicken addEgg(Chicken chicken, Integer eggsToAdd){

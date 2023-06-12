@@ -60,7 +60,7 @@ function Flock(props) {
                                     <td className='fill border'>{chicken.breed}</td>
                                     <td className='fill border'>{chicken.eggsLaid}</td>
                                     <td className='fill border center'> 
-                                        <button class-name = 'center margin' role = 'button' id = {chicken} onClick={() => submitHandler(chicken)}>Add Egg!</button>
+                                        <button class-name = 'center margin button' role = 'button' id = {chicken} onClick={() => submitHandler(chicken)}>Add Egg!</button>
                                         
                                     </td>
                                 </tr>
@@ -86,7 +86,7 @@ function Flock(props) {
   return (
     <div className='flex-column fill center background'>
         
-        <div className='flex-column half-width container margin box2'>
+        <div className='flex-column half-width container scroll margin box2'>
             
             <h2 className='center'>Which Hens Layed Today?</h2>
             {renderContents()}

@@ -139,7 +139,7 @@ function AddChicken(props) {
                 </select>
                 
                 <div className = 'margin center'>
-                <button className = 'colorScheme2' role = 'button' onClick={submitHandler}>SUBMIT!</button>
+                <button className = 'colorScheme2 button' role = 'button' onClick={submitHandler}>SUBMIT!</button>
                 <div className = 'margin center'> {errorMessage}</div>
                 
                 </div>
