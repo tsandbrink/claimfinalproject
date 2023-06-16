@@ -3,7 +3,7 @@ import { useParams } from 'react-router'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import chickenBox from '../../CSS/Reusables/chickenBox.css'
-
+import NoUserFoundMessage from '../Reusables/NoUserFoundMessage'
 
 
 function Chicken(props) {
@@ -77,7 +77,7 @@ function Chicken(props) {
             
 
             return chicken.treeNodes.map((treeNode) => { 
-                //console.log(chicken.name + treeNode)
+                
                 if (chicken.isDead === true && number === treeNode.generation && number2 === treeNode.position && chicken.sex === 'female'){ 
                     isPositionFilled = true
                     return(
@@ -176,7 +176,7 @@ function Chicken(props) {
                     positions.push(i)
                 }
             }
-            console.log(number, maxNumber, index, positions)
+            
             return positions.map((number2) => {
                 return (<div className='flex-column center'>{showChickenFamilyTree3(number, number2)}</div>)
             })
@@ -203,35 +203,74 @@ function Chicken(props) {
         //return rowsNeeded
     }
 
+    const checkForChickenInUserFlock = () => {
+        let containsChicken = false;
+        for (let i = 0; i < props.user.userFlock?.chickensInFlock.length; i++){
+            if (props.user.userFlock.chickensInFlock[i].id == params.id){
+                containsChicken = true;
+            }
+        }
+        return containsChicken;
+    }
+
+    const render = () => {
+        if (props.user.id !== undefined && checkForChickenInUserFlock() === true){
+            return (
+        
+                <div className='flex-column background2 scroll2 fill container'>
+                    <div className='positionFixed flex-row'>
+                        
+                            <div className='flex-column'>
+                                <button className = 'colorScheme2 margin center button' role = 'button' onClick={zoomIn}>+</button>
+                                <button className = 'colorScheme2 margin center button' role = 'button' onClick={zoomOut}>-</button>
+                                
+                            </div>
+                            <div className = "flex-row center">
+                                    <div className='female-chicken-box-key smallMargin'>Hen</div>
+                                    <div className='male-chicken-box-key smallMargin'>Rooster</div>
+                                    <div className='dead-chicken-box-key smallMargin'>Dead</div>
+                            </div>
+                        
+                    </div>
+                    <div className='flex-column center' id = 'familyTree'>
+                        
+                        <div className='flex-row center margin'>
+                        {findRowsNeeded()}
+                        <h1 className='underline'>{chicken.name}'s Lineage</h1>
+                        </div>
+                        <div className='flex-column centerTop'>
+                        
+                        {showChickenFamilyTree()}
+                        </div>    
+                        <div>
+                        <a className='margin' href = {`/EditChicken/${chicken.id}`}>Edit {chicken.name}</a>
+                        </div>            
+                        
+                    </div>
+                    
+                   
+                </div>
+                
+                
+          )
+        } else if (props.user.id !== undefined){
+            return (
+                <div>ERROR: CHICKEN NOT FOUND IN FLOCK</div>
+            )
+        } else {
+            return (
+                <NoUserFoundMessage/>
+            )
+        }
+    }
+
+
+
     return (
         
-        <div className='flex-column background2 scroll2 fill container'>
-            <div className='positionFixed flex-column'>
-                <button className = 'colorScheme2 margin center button' role = 'button' onClick={zoomIn}>+</button>
-                <button className = 'colorScheme2 margin center button' role = 'button' onClick={zoomOut}>-</button>
-            </div>
-            
-            <div className='flex-column center' id = 'familyTree'>
-                
-                <div className='flex-row center margin'>
-                {findRowsNeeded()}
-                <h1 className='underline'>{chicken.name}'s Lineage</h1>
-                </div>
-                <div className='flex-column centerTop'>
-                {console.log(ancestors)}
-                {showChickenFamilyTree()}
-                </div>    
-                <div>
-                <a className='margin' href = {`/EditChicken/${chicken.id}`}>Edit {chicken.name}</a>
-                </div>            
-                
-            </div>
-                
-           
-        </div>
-        
-        
-  )
+        render()
+             
+    )
 }
 
 export default Chicken

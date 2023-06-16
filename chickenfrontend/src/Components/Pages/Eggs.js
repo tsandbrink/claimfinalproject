@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router'
+import NoUserFoundMessage from '../Reusables/NoUserFoundMessage'
 
 function Flock(props) {
     
@@ -10,7 +11,7 @@ function Flock(props) {
 
     const submitHandler = (chicken) => {
         chicken.eggsLaid+=1;
-        console.log(chicken)
+        
         axios.post("http://localhost:8080/chicken/updateChicken", chicken)
         
             .then((response) =>{
@@ -19,7 +20,7 @@ function Flock(props) {
                 
             })
             .catch((e) =>{
-                console.log("upload failed to add to flock")
+                
                 setErrorMessage("Error: Egg Failed to Upload")
                 console.log(e)
             })
@@ -83,17 +84,29 @@ function Flock(props) {
         }
     }
 
+    const render = () => {
+        if (props.user.id !== undefined){
+            return (
+                <div className='flex-column fill center background'>
+                    
+                    <div className='flex-column half-width container scroll margin box2'>
+                        
+                        <h2 className='center'>Which Hens Layed Today?</h2>
+                        {renderContents()}
+                        <h3 className='center'>{errorMessage}</h3>
+                    </div>
+                    
+                </div>
+              )
+        } else {
+            return(
+                <NoUserFoundMessage/>
+            )
+        }
+    }
+
   return (
-    <div className='flex-column fill center background'>
-        
-        <div className='flex-column half-width container scroll margin box2'>
-            
-            <h2 className='center'>Which Hens Layed Today?</h2>
-            {renderContents()}
-            <h3 className='center'>{errorMessage}</h3>
-        </div>
-        
-    </div>
+    render()
   )
 }
 

@@ -1,8 +1,12 @@
 import React from 'react'
 import Header from '../Reusables/Header'
+import NoUserFoundMessage from '../Reusables/NoUserFoundMessage'
 
 function WelcomeBack(props) {
-  return (
+  
+  const render = () => {
+    if (props.user.id !== undefined){
+      return (
     
         <div className='flex-column container background2'>
 
@@ -12,6 +16,18 @@ function WelcomeBack(props) {
           </div>
           
         </div>
+      
+      )
+    } else {
+        return (
+          <NoUserFoundMessage/>
+        )
+    }
+  }
+  
+  return (
+    
+        render()
       
   )
 }

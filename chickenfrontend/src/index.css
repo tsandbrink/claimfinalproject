@@ -55,6 +55,10 @@ body #root{
   margin: 10px;
 }
 
+.smallMargin{
+  margin: 2px;
+}
+
 .right{
   justify-content: right;
 }
@@ -80,12 +84,17 @@ body #root{
 
 
 .background {
-  background: url(https://images.pexels.com/photos/4348410/pexels-photo-4348410.jpeg?auto=compress&cs=tinysrgb&w=600) no-repeat center fixed;
+  background: url(https://i.imgur.com/GlUWN4U.jpg) no-repeat center fixed;
   background-size: cover;
 }
 
 .background2 {
   background-color:rgb(212, 213, 184);
+}
+
+.background3 {
+  background: url(https://images.pexels.com/photos/4348410/pexels-photo-4348410.jpeg?auto=compress&cs=tinysrgb&w=600) no-repeat center fixed;
+  background-size: cover;
 }
 
 .colorScheme{
@@ -146,6 +155,11 @@ body #root{
 .pageHeader{
   height: 10%;
   width: 33%;
+}
+
+.pageHeader2{
+  height: 10%;
+  width: 100%;
 }
 
 .pageBody{

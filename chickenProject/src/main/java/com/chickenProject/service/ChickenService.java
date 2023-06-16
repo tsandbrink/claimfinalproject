@@ -126,10 +126,7 @@ public class ChickenService {
                         
                     }
                     t.setPosition(newPosition);
-                }
-                
-                    
-                
+                }     
             }
         }
         return ancestors;
@@ -164,7 +161,6 @@ public class ChickenService {
             }
             
         }
-       
         
         return ancestors;
     }

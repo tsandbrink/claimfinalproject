@@ -20,7 +20,7 @@ function SearchBox(props) {
         axios.get(`http://localhost:8080/chicken/getAverageByZipCodeAndBreed/${searchCriteria.zipCode}/${searchCriteria.breed}`)
         
             .then((response) =>{
-                console.log(response.data)
+                
                 setResultMessage("\nThere are  " + response.data[0] + " " + searchCriteria.breed + " hens kept by MyFlock users in " + searchCriteria.zipCode + ". Users report that on average they lay " + response.data[1].toFixed(2) + " eggs per week.")
                 console.log("Result Found")
                 

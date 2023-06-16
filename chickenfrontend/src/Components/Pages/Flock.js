@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router'
+import NoUserFoundMessage from '../Reusables/NoUserFoundMessage'
 
 function Flock(props) {
     
     const navigator = useNavigate()
     const [feedMessage, setFeedMessage] = useState("")
-    
+
 
     const submitHandler = () => {
         console.log(props.user.userFlock)
@@ -57,9 +58,9 @@ function Flock(props) {
         
         if(props.user.userFlock === undefined) {
 
-            return (
-                navigator("/SignIn")
-            )
+             
+                navigator("user/SignIn")
+            
 
         } else {
             if (props.user.userFlock.chickensInFlock.length !== 0){
@@ -137,22 +138,40 @@ function Flock(props) {
         }
     }
 
-  return (
-    <div className='flex-column fill center background'>
-        <div className='flex-column pageHeader margin box2'>
-            <div className='margin center'>
-                <button className='button' onClick={submitHandler}>Get Feed Estimate!</button>
-            </div>
-            <div className= 'margin center'>
-                {feedMessage} 
-            </div>
-        </div>
-        <div className='flex-column pageBody container scroll margin flockBox'>
-            <h2 className='center'>{props.user.userName}'s Flock:</h2>
-            {renderContents()}
-        </div>
+
+    const render = () => {
+        if (props.user.id !== undefined){
+            return (
+                <div className='flex-column fill center background'>
+                    <div className='flex-column pageHeader margin box2'>
+                        <div className='margin center'>
+                            <button className='button' onClick={submitHandler}>Get Feed Estimate!</button>
+                        </div>
+                        <div className= 'margin center'>
+                            {feedMessage} 
+                        </div>
+                    </div>
+                    <div className='flex-column pageBody container scroll margin flockBox'>
+                        <h2 className='center'>{props.user.userName}'s Flock:</h2>
+                        {renderContents()}
+                    </div>
+                    
+                </div>
+              )
+        } else {
+            return(
+                <NoUserFoundMessage/>
+            )
+            
+        }
+            
+            
         
-    </div>
+        
+    }
+
+  return (
+    render()
   )
 }
 

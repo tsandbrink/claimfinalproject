@@ -73,3 +73,30 @@
     background-color: firebrick;
     padding: 10px;
   }
+
+.female-chicken-box-key {
+    border: 2px solid black;
+    border-radius: 1px;
+    justify-content: center;
+    background-color: pink;
+    padding: 2px;
+    color: black;
+}
+
+.male-chicken-box-key {
+    border: 2px solid black;
+    border-radius: 1px;
+    justify-content: center;
+    background-color: skyblue;
+    padding: 2px;
+    color: black;
+}
+
+.dead-chicken-box-key {
+    border: 2px solid black;
+    border-radius: 1px;
+    justify-content: center;
+    background-color: gray;
+    padding: 2px;
+    color: black;
+}

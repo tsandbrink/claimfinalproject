@@ -23,7 +23,6 @@ import com.chickenProject.service.UserService;
 @RestController
 @RequestMapping(value="/user")
 @CrossOrigin("*")
-
 public class UserController {
     // You can autowire any service you need to get the data from
     @Autowired

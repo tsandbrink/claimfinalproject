@@ -4,6 +4,7 @@ import axios from 'axios'
 import '../../CSS/Reusables/chickenBox.css'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
+import NoUserFoundMessage from '../Reusables/NoUserFoundMessage'
 
 function AddChicken(props) {
        
@@ -15,7 +16,6 @@ function AddChicken(props) {
         axios.get(`http://localhost:8080/chicken/findChickenById/${params.id}`)
         .then((response) => {
             setChicken(response.data)
-            
         }).catch((e) => {
             console.log(e)
         })
@@ -79,8 +79,7 @@ function AddChicken(props) {
     }
 
     const deleteHandler = () => {
-        
-        
+          
         axios.delete(`http://localhost:8080/chicken/deleteChicken/${chicken.id}`)
     
         .then((response) =>{
@@ -125,104 +124,122 @@ function AddChicken(props) {
         )
     }
 
-    const render = () => {
-        if (chicken.sex === "female"){
-            return(
-                <div className='background fill center'>
-                    <div className= 'flex-column background2 third-width box center'>
-                        <h1>Edit {chicken.name}:</h1>
-                        <div className= 'flex-column'> 
-                            <div className='flex-column'>
-                                <div className = 'margin center'>NAME: </div>
-                                <input className = 'colorScheme2' name="name" type = "name" onChange={changeHandler}/>
-                                <div className= 'margin center'>DATE OF BIRTH: </div>
-                                <input className = 'colorScheme2' name="birthdate" type = "date" onChange={changeHandler}/>
-                                <div className = 'margin center'>SEX: 
-                                <input className = 'colorScheme2' id = "sex" name="sex" type = "radio" value = "male" onChange={changeHandler}/>
-                                <label for="sex" name = "male" value = "male"> Rooster</label>
-                                <input className = 'colorScheme2' id = "sex" name="sex" type = "radio" value = "female" onChange={changeHandler}/>
-                                <label for="sex" name = "female" value = "female">Hen</label></div>
-                                <div className = 'margin center'>BREED: </div>
-                                <input className = 'colorScheme2' name="breed" type = "breed" onChange={changeHandler}/>
-                                <div className = 'margin center'>IS THIS CHICKEN DEAD*: 
-                                <input className = 'colorScheme2' name="isDead" type = "checkbox" onChange={changeHandler}/>
-                                </div>
-                                
-                                <div className = 'margin center'>MOTHER: </div>
-                                <select className = 'colorScheme2' name = "motherName" onChange={changeHandler}> 
-                                <option value = "Unknown">Unknown</option>
-                                {showOptionsMother()}
-                                </select>
-                                <div className = 'margin center'>FATHER: </div>
-                                <select className = 'colorScheme2' name = "fatherName" onChange={changeHandler}> 
-                                <option value = "Unknown">Unknown</option>
-                                {showOptionsFather()}
-                                </select>
-                                <div className = 'margin center'>EGGS LAID: </div>
-                                <input className = 'colorScheme2' name="eggsLaid" type = "number" onChange={changeHandler}/>
-                                <div className = 'margin center'>
-                                <button className = 'colorScheme2 button' role = 'button' onClick={submitHandler}>SUBMIT!</button>
-                                
-                                <div className = 'margin center'> {errorMessage}</div>
-                                <button className = 'colorScheme2 button' role = 'button' onClick={deleteHandler}>DELETE!</button>
-                                </div>
-                                <div className='center'>*Adding Dead Chickens will help build your Flock's family tree</div>
-                            </div>
-                        </div>
-                    
-                    
-                    </div>
-                </div>
-            )
-        } else if (chicken.sex === "male"){
-
-            return(
-                <div className='background fill center'>
-                    <div className= 'flex-column background2 third-width box center'>
-                        <h1>Edit {chicken.name}:</h1>
-                        <div className= 'flex-column'> 
-                            <div className='flex-column'>
-                                <div className = 'margin center'>NAME: </div>
-                                <input className = 'colorScheme2' name="name" type = "name" onChange={changeHandler}/>
-                                <div className= 'margin center'>DATE OF BIRTH: </div>
-                                <input className = 'colorScheme2' name="birthdate" type = "date" onChange={changeHandler}/>
-                                <div className = 'margin center'>SEX: 
-                                <input className = 'colorScheme2' id = "sex" name="sex" type = "radio" value = "male" onChange={changeHandler}/>
-                                <label for="sex" name = "male" value = "male"> Rooster</label>
-                                <input className = 'colorScheme2' id = "sex" name="sex" type = "radio" value = "female" onChange={changeHandler}/>
-                                <label for="sex" name = "female" value = "female">Hen</label></div>
-                                <div className = 'margin center'>BREED: </div>
-                                <input className = 'colorScheme2' name="breed" type = "breed" onChange={changeHandler}/>
-                                <div className = 'margin center'>IS THIS CHICKEN DEAD*: 
-                                <input className = 'colorScheme2' name="isDead" type = "checkbox" onChange={changeHandler}/>
-                                </div>
-                                
-                                <div className = 'margin center'>MOTHER: </div>
-                                <select className = 'colorScheme2' name = "motherName" onChange={changeHandler}> 
-                                <option value = "Unknown">Unknown</option>
-                                {showOptionsMother()}
-                                </select>
-                                <div className = 'margin center'>FATHER: </div>
-                                <select className = 'colorScheme2' name = "fatherName" onChange={changeHandler}> 
-                                <option value = "Unknown">Unknown</option>
-                                {showOptionsFather()}
-                                </select>
-                                
-                                <div className = 'margin center'>
-                                <button className = 'colorScheme2 button' role = 'button' onClick={submitHandler}>SUBMIT!</button>
-                                <button className = 'colorScheme2 button' role = 'button' onClick={deleteHandler}>DELETE!</button>
-                                <div className = 'margin center'> {errorMessage}</div>
-                                
-                                </div>
-                                <div className='center'>*Adding Dead Chickens will help build your Flock's family tree</div>
-                            </div>
-                        </div>
-                    
-                    
-                    </div>
-                </div>
-            )
+    const checkForChickenInUserFlock = () => {
+        let containsChicken = false;
+        for (let i = 0; i < props.user.userFlock?.chickensInFlock.length; i++){
+            if (props.user.userFlock.chickensInFlock[i].id == params.id){
+                containsChicken = true;
+            }
         }
+        return containsChicken;
+    }
+
+
+    const render = () => {
+        console.log(checkForChickenInUserFlock())
+            if (props.user.id !== undefined && checkForChickenInUserFlock() === true){
+                if (chicken.sex === "female"){
+                    return(
+                        <div className='background fill center'>
+                            <div className= 'flex-column background2 third-width box center'>
+                                <h1>Edit {chicken.name}:</h1>
+                                <div className= 'flex-column'> 
+                                    <div className='flex-column'>
+                                        <div className = 'margin center'>NAME: </div>
+                                        <input className = 'colorScheme2' name="name" type = "name" onChange={changeHandler}/>
+                                        <div className= 'margin center'>DATE OF BIRTH: </div>
+                                        <input className = 'colorScheme2' name="birthdate" type = "date" onChange={changeHandler}/>
+                                        <div className = 'margin center'>SEX: 
+                                        <input className = 'colorScheme2' id = "sex" name="sex" type = "radio" value = "male" onChange={changeHandler}/>
+                                        <label for="sex" name = "male" value = "male"> Rooster</label>
+                                        <input className = 'colorScheme2' id = "sex" name="sex" type = "radio" value = "female" onChange={changeHandler}/>
+                                        <label for="sex" name = "female" value = "female">Hen</label></div>
+                                        <div className = 'margin center'>BREED: </div>
+                                        <input className = 'colorScheme2' name="breed" type = "breed" onChange={changeHandler}/>
+                                        <div className = 'margin center'>IS THIS CHICKEN DEAD*: 
+                                        <input className = 'colorScheme2' name="isDead" type = "checkbox" onChange={changeHandler}/>
+                                        </div>
+                                        
+                                        <div className = 'margin center'>MOTHER: </div>
+                                        <select className = 'colorScheme2' name = "motherName" onChange={changeHandler}> 
+                                        <option value = "Unknown">Unknown</option>
+                                        {showOptionsMother()}
+                                        </select>
+                                        <div className = 'margin center'>FATHER: </div>
+                                        <select className = 'colorScheme2' name = "fatherName" onChange={changeHandler}> 
+                                        <option value = "Unknown">Unknown</option>
+                                        {showOptionsFather()}
+                                        </select>
+                                        <div className = 'margin center'>EGGS LAID: </div>
+                                        <input className = 'colorScheme2' name="eggsLaid" type = "number" onChange={changeHandler}/>
+                                        <div className = 'margin center'>
+                                        <button className = 'colorScheme2 button' role = 'button' onClick={submitHandler}>SUBMIT!</button>
+                                        
+                                        <div className = 'margin center'> {errorMessage}</div>
+                                        <button className = 'colorScheme2 button' role = 'button' onClick={deleteHandler}>DELETE!</button>
+                                        </div>
+                                        <div className='center'>*Adding Dead Chickens will help build your Flock's family tree</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )
+                } else if (chicken.sex === "male"){
+                    return(
+                        <div className='background fill center'>
+                            <div className= 'flex-column background2 third-width box center'>
+                                <h1>Edit {chicken.name}:</h1>
+                                <div className= 'flex-column'> 
+                                    <div className='flex-column'>
+                                        <div className = 'margin center'>NAME: </div>
+                                        <input className = 'colorScheme2' name="name" type = "name" onChange={changeHandler}/>
+                                        <div className= 'margin center'>DATE OF BIRTH: </div>
+                                        <input className = 'colorScheme2' name="birthdate" type = "date" onChange={changeHandler}/>
+                                        <div className = 'margin center'>SEX: 
+                                        <input className = 'colorScheme2' id = "sex" name="sex" type = "radio" value = "male" onChange={changeHandler}/>
+                                        <label for="sex" name = "male" value = "male"> Rooster</label>
+                                        <input className = 'colorScheme2' id = "sex" name="sex" type = "radio" value = "female" onChange={changeHandler}/>
+                                        <label for="sex" name = "female" value = "female">Hen</label></div>
+                                        <div className = 'margin center'>BREED: </div>
+                                        <input className = 'colorScheme2' name="breed" type = "breed" onChange={changeHandler}/>
+                                        <div className = 'margin center'>IS THIS CHICKEN DEAD*: 
+                                        <input className = 'colorScheme2' name="isDead" type = "checkbox" onChange={changeHandler}/>
+                                        </div>
+                                        <div className = 'margin center'>MOTHER: </div>
+                                        <select className = 'colorScheme2' name = "motherName" onChange={changeHandler}> 
+                                        <option value = "Unknown">Unknown</option>
+                                        {showOptionsMother()}
+                                        </select>
+                                        <div className = 'margin center'>FATHER: </div>
+                                        <select className = 'colorScheme2' name = "fatherName" onChange={changeHandler}> 
+                                        <option value = "Unknown">Unknown</option>
+                                        {showOptionsFather()}
+                                        </select>
+                                        <div className = 'margin center'>
+                                        <button className = 'colorScheme2 button' role = 'button' onClick={submitHandler}>SUBMIT!</button>
+                                        <button className = 'colorScheme2 button' role = 'button' onClick={deleteHandler}>DELETE!</button>
+                                        <div className = 'margin center'> {errorMessage}</div>
+                                        </div>
+                                        <div className='center'>*Adding Dead Chickens will help build your Flock's family tree</div>
+                                    </div>
+                                </div>
+                            
+                            
+                            </div>
+                        </div>
+                    )
+                }
+            } else if (props.user.id !== undefined){
+                return (
+                    <div>ERROR: CHICKEN NOT FOUND IN FLOCK</div>
+                )
+            } else {
+                return (
+                    <NoUserFoundMessage/>
+                )
+            }
+        
+        
     }
 
     return (      

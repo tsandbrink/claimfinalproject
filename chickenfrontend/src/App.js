@@ -39,7 +39,7 @@ function App() {
       axios.get(`http://localhost:8080/user/findUserByUserName/${userName}`) 
       .then((response) => {
         setUser(response.data)
-        console.log(response.data)
+        //console.log(response.data)
         setIsLoading(false)
       })
       .catch((e) => {
