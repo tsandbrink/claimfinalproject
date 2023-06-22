@@ -5,11 +5,15 @@ function Header(props) {
   
   const navigator = useNavigate()
   const signOut = () => {
-    localStorage.removeItem("userCookie")
+    localStorage.removeItem("token")
     props.setUser({
-      userName: "",
-      password: ""
-    })
+      id: undefined,
+      username: "",
+      email: "",
+      state: "",
+      zipCode: "",
+      roles: [],
+    });
     navigator("/user/signIn")
   }
 

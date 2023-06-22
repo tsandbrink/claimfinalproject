@@ -33,3 +33,5 @@ build/
 .vscode/
 
 /src/main/resources/application.properties
+/chickenfrontend/node_modules
+/chickenProject/src/main/resources/application.properties

@@ -7,7 +7,12 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.chickenProject.entity.Flock;
 import com.chickenProject.entity.User;
+import com.chickenProject.entity.UserDetailsDTO;
 import com.chickenProject.service.FlockService;
 import com.chickenProject.service.UserService;
 
@@ -42,13 +48,13 @@ public class UserController {
     // Request body is encrypted, always send password through a post request
     public ResponseEntity<Object> signUp(@RequestBody User user) {
         try {
-            System.out.println("here");
+            
             Flock userFlock = flockService.save(new Flock());
           //  System.out.println("here2");
             //user.setUserFlock(userFlock);
             //System.out.println("here3");
             User savedUser = userService.save(user);
-            System.out.println("here4");
+            
             savedUser = userService.addFlockToUser(user, userFlock);
             return new ResponseEntity<Object>(savedUser, HttpStatus.CREATED);
         } catch(DataIntegrityViolationException e) {
@@ -85,6 +91,29 @@ public class UserController {
         }
 
     }
+
+    @GetMapping("/getUser")
+    public ResponseEntity<Object> currentUser() {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            Jwt jwt = (Jwt) authentication.getPrincipal();
+            String subject = jwt.getSubject();
+
+            // assuming you have a UserService with a method to fetch user by username
+            //User user = userService.loadUserByUsername(subject);
+           // Flock userFlock = flockService.findByUser(user);
+            User user = (User)userService.loadUserByUsername(subject);
+            UserDetailsDTO userDetails = new UserDetailsDTO(user.getUsername(), user.getId(), user.getEmail(), user.getState(), user.getZipCode(), user.getUserFlock());
+            //userDetails.setFlock(userFlock);
+            //System.out.println(userDetails);
+            //UserDetailsDTO userDetailsDTO = new UserDetailsDTO(userDetails.getUsername(), userDetails.getFlock(), subject, null, subject, subject, null)
+            return new ResponseEntity<Object>(userDetails, HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
     //--------------------------------------------------------//
     @RequestMapping(

@@ -49,14 +49,18 @@ function AddChicken(props) {
     
 
     const submitHandler = () => {
-            
+            let jwtToken = localStorage.getItem('token');
+            const headers = {
+                Authorization: `Bearer ${jwtToken}`
+            };
+
             chicken.zipCode = props.user.zipCode
             chicken.state = props.user.state
-            axios.post("http://localhost:8080/chicken/create", chicken)
+            axios.post("http://localhost:8080/chicken/create", chicken, {headers})
             .then( (response) => {
                // const chickenToAdd = response.data.id
                const newChicken = response.data
-               axios.post(`http://localhost:8080/flock/addChickenToFlock/${props.user.userFlock.id}`, newChicken)
+               axios.post(`http://localhost:8080/flock/addChickenToFlock/${props.user.flock.id}`, newChicken, {headers})
                 .then(() =>{
                     props.setUpdateUser({})
                     console.log("uploaded")
@@ -80,7 +84,7 @@ function AddChicken(props) {
 
     const showOptionsMother = () => {
         
-        return props.user.userFlock?.chickensInFlock.map((chicken) =>{
+        return props.user.flock?.chickensInFlock.map((chicken) =>{
             if (chicken.sex === "female"){
                 return(
                     <option name = "motherName" value = {chicken.name} id = {chicken.id}> {chicken.name}</option>
@@ -94,7 +98,7 @@ function AddChicken(props) {
   
     const showOptionsFather = () => {
         
-        return props.user.userFlock?.chickensInFlock.map((chicken) =>{
+        return props.user.flock?.chickensInFlock.map((chicken) =>{
             if (chicken.sex === "male"){
                 return(
                     <option name = "fatherName" value = {chicken.name} id = {chicken.id}> {chicken.name}</option>
@@ -107,6 +111,7 @@ function AddChicken(props) {
     }
 
     const render = () => {
+        //console.log(props.user)
         if (props.user.id !== undefined){
             return (
                 <div className='background fill center'>

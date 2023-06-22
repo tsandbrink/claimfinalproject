@@ -14,17 +14,21 @@ function Chicken(props) {
   let desiredZoomLevel = 1;
 
     useEffect(()=> {
-        axios.get(`http://localhost:8080/chicken/findChickenAncestorsById/${params.id}`)
+        let jwtToken = localStorage.getItem('token');
+        const headers = {
+            Authorization: `Bearer ${jwtToken}`
+        };
+        axios.get(`http://localhost:8080/chicken/findChickenAncestorsById/${params.id}`, {headers})
         .then((response) => {
             setAncestors(response.data)
             
         }).catch((e) => {
             console.log(e)
         })
-        axios.get(`http://localhost:8080/chicken/findChickenById/${params.id}`)
+        axios.get(`http://localhost:8080/chicken/findChickenById/${params.id}`, {headers})
         .then((response) => {
             setChicken(response.data)
-            
+           
         }).catch((e) => {
             console.log(e)
         })
@@ -205,8 +209,8 @@ function Chicken(props) {
 
     const checkForChickenInUserFlock = () => {
         let containsChicken = false;
-        for (let i = 0; i < props.user.userFlock?.chickensInFlock.length; i++){
-            if (props.user.userFlock.chickensInFlock[i].id == params.id){
+        for (let i = 0; i < props.user.flock?.chickensInFlock.length; i++){
+            if (props.user.flock.chickensInFlock[i].id == params.id){
                 containsChicken = true;
             }
         }

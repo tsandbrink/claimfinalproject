@@ -11,9 +11,14 @@ function AddChicken(props) {
     const params = useParams()
     const [chicken, setChicken] = useState({name:"", birthdate:0, sex:"", breed:"", isDead:false, motherName:"", fatherName:"", motherId:0, fatherId:0, eggsLaid:0})
     const [errorMessage, setErrorMessage] = useState("")
+    const navigator = useNavigate()
 
     useEffect(()=> {
-        axios.get(`http://localhost:8080/chicken/findChickenById/${params.id}`)
+        let jwtToken = localStorage.getItem('token');
+        const headers = {
+            Authorization: `Bearer ${jwtToken}`
+        };
+        axios.get(`http://localhost:8080/chicken/findChickenById/${params.id}`, {headers})
         .then((response) => {
             setChicken(response.data)
         }).catch((e) => {
@@ -58,11 +63,15 @@ function AddChicken(props) {
     
 
     const submitHandler = () => {
-            console.log(chicken)
+            
             chicken.zipCode = props.user.zipCode
             chicken.state = props.user.state
+            let jwtToken = localStorage.getItem('token');
+            const headers = {
+                Authorization: `Bearer ${jwtToken}`
+            };
             
-            axios.post("http://localhost:8080/chicken/updateChicken", chicken)
+            axios.post("http://localhost:8080/chicken/updateChicken", chicken, {headers})
         
             .then((response) =>{
                 props.setUpdateUser({})
@@ -79,13 +88,17 @@ function AddChicken(props) {
     }
 
     const deleteHandler = () => {
-          
-        axios.delete(`http://localhost:8080/chicken/deleteChicken/${chicken.id}`)
+        let jwtToken = localStorage.getItem('token');
+        const headers = {
+            Authorization: `Bearer ${jwtToken}`
+        };
+        axios.delete(`http://localhost:8080/chicken/deleteChicken/${chicken.id}`, {headers})
     
         .then((response) =>{
             props.setUpdateUser({})
             console.log("deleted")
             setErrorMessage("Chicken Deleted")
+            navigator("/Flock")
         })
         .catch((e) =>{
             console.log("Delete failed")
@@ -98,7 +111,7 @@ function AddChicken(props) {
 
     const showOptionsMother = () => {
         
-        return props.user.userFlock?.chickensInFlock.map((chicken) =>{
+        return props.user.flock?.chickensInFlock.map((chicken) =>{
             if (chicken.sex === "female"){
                 return(
                     <option name = "motherName" value = {chicken.name} id = {chicken.id}> {chicken.name}</option>
@@ -112,7 +125,7 @@ function AddChicken(props) {
   
     const showOptionsFather = () => {
         
-        return props.user.userFlock?.chickensInFlock.map((chicken) =>{
+        return props.user.flock?.chickensInFlock.map((chicken) =>{
             if (chicken.sex === "male"){
                 return(
                     <option name = "fatherName" value = {chicken.name} id = {chicken.id}> {chicken.name}</option>
@@ -126,8 +139,8 @@ function AddChicken(props) {
 
     const checkForChickenInUserFlock = () => {
         let containsChicken = false;
-        for (let i = 0; i < props.user.userFlock?.chickensInFlock.length; i++){
-            if (props.user.userFlock.chickensInFlock[i].id == params.id){
+        for (let i = 0; i < props.user.flock?.chickensInFlock.length; i++){
+            if (props.user.flock.chickensInFlock[i].id == params.id){
                 containsChicken = true;
             }
         }
@@ -136,7 +149,7 @@ function AddChicken(props) {
 
 
     const render = () => {
-        console.log(checkForChickenInUserFlock())
+        //console.log(checkForChickenInUserFlock())
             if (props.user.id !== undefined && checkForChickenInUserFlock() === true){
                 if (chicken.sex === "female"){
                     return(

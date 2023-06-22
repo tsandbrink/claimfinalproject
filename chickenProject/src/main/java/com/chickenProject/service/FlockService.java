@@ -3,6 +3,7 @@ package com.chickenProject.service;
 import com.chickenProject.repo.FlockRepo;
 import com.chickenProject.entity.Chicken;
 import com.chickenProject.entity.Flock;
+import com.chickenProject.entity.User;
 
 import java.util.List;
 
@@ -40,6 +41,25 @@ public class FlockService {
     	// It will always return an Optional Object, the flock will be there if found, null if not
     	// If found, give the object back with a .get() to grab it off the Optional object
     	
+        if(flockRepo.findById(flockId).isPresent()) {
+            return flockRepo.findById(flockId).get();
+        }
+        
+        // if flock is not present, throw error so front end can handle it
+        throw new Error("No flock id present, Flock not found, send an id billy, dumbass");
+        
+    }
+
+	public Flock findByUser(User user) throws Error {
+        
+    	// Find by is another predefined repo function, you can always find by the primary key
+    	// when you use findById, its good practice to use the isPresent in an if check first
+    	// It will tell you if a object was actually found, with true or false values, true if found, false is not
+    	// It will always return an Optional Object, the flock will be there if found, null if not
+    	// If found, give the object back with a .get() to grab it off the Optional object
+    	
+		Integer flockId = user.getUserFlock().getId();
+
         if(flockRepo.findById(flockId).isPresent()) {
             return flockRepo.findById(flockId).get();
         }

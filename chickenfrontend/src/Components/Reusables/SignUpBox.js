@@ -3,6 +3,7 @@ import signUpBox from '../../CSS/Reusables/signUpBox.css'
 import { useNavigate } from 'react-router'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
+import jwt_decode from 'jwt-decode'
 
 function SignUpBox(props) {
   
@@ -20,11 +21,26 @@ function SignUpBox(props) {
 
     const submitHandler = () => {
         if (props.user.userName !== '' && props.user.password !== '' && props.user.userEmail !=='' && props.user.zipCode !== '' && ValidateEmail() !== false){
-                axios.post("http://localhost:8080/user/signUp", props.user)
+            console.log(props.user)
+                axios.post("http://localhost:8080/auth/register", props.user)
             .then((response) => {
-            localStorage.setItem("userCookie", response.data.userName)
-                props.setUser(response.data)
+                localStorage.setItem("token", response.data.jwt);
+                // const decodedToken = jwt_decode(response.data.jwt);
+                // const updatedUser = {
+                //     id: decodedToken.userId,
+                //     username: decodedToken.sub,
+                //     email: decodedToken.email,
+                //     state: decodedToken.state,
+                //     zipCode: decodedToken.zipCode,
+                //  //   roles: decodedToken.roles
+                // };
+    
+                //props.setUser(updatedUser);
                 navigator("/Thanks")
+                // localStorage.setItem("userCookie", response.data.userName)
+                // props.setUser(response.data)
+                // console.log(props.user)
+                // navigator("/Thanks")
             })
             .catch((e) => {
                 console.log(e)
@@ -40,7 +56,7 @@ function SignUpBox(props) {
     function ValidateEmail()
     {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-        if(!regex.test(props.user.userEmail))
+        if(!regex.test(props.user.email))
         {
             alert("This is not a valid email address");
             console.log("invalid Email")
@@ -58,7 +74,7 @@ function SignUpBox(props) {
                 <div className= 'margin center'>PASSWORD: </div>
                 <input className = 'colorScheme2' name="password" type = "password" onChange={changeHandler}/>
                 <div className = 'margin center'>EMAIL: </div>
-                <input className = 'colorScheme2' name="userEmail" type = "userEmail" onChange={changeHandler}/>
+                <input className = 'colorScheme2' name="email" type = "email" onChange={changeHandler}/>
                 <div className = 'margin center'>ZIP CODE: </div>
                 <input className = 'colorScheme2' name="zipCode" type = "zipCode" onChange={changeHandler}/>
                 <div className = 'margin center'>STATE: </div>

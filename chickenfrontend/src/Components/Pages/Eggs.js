@@ -11,8 +11,11 @@ function Flock(props) {
 
     const submitHandler = (chicken) => {
         chicken.eggsLaid+=1;
-        
-        axios.post("http://localhost:8080/chicken/updateChicken", chicken)
+        let jwtToken = localStorage.getItem('token');
+        const headers = {
+            Authorization: `Bearer ${jwtToken}`
+        };
+        axios.post("http://localhost:8080/chicken/updateChicken", chicken, {headers})
         
             .then((response) =>{
                 props.setUpdateUser({})
@@ -29,14 +32,14 @@ function Flock(props) {
 
     const renderContents = () => {
 
-        if(props.user.userFlock === undefined) {
+        if(props.user.flock === undefined) {
 
             return (
                 navigator("/SignIn")
             )
 
         } else {
-            if (props.user.userFlock.chickensInFlock.length !== 0){
+            if (props.user.flock.chickensInFlock.length !== 0){
                 
                 return (
                     <table className='flex-column border margin'>
@@ -47,7 +50,7 @@ function Flock(props) {
                              <th className='fill border'>Eggs Laid</th>
                              <th className='fill border'>Add Egg</th>
                          </tr>
-                        {props.user.userFlock.chickensInFlock.map((chicken) => {
+                        {props.user.flock.chickensInFlock.map((chicken) => {
                            if (chicken.isDead === false && chicken.sex === "female"){
                             return (
                                 

@@ -2,6 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router'
 import axios from 'axios'
 import { useState } from 'react'
+import jwt_decode from 'jwt-decode'
 
 function SignInBox(props) {
     //build a use state variable up here
@@ -18,10 +19,20 @@ function SignInBox(props) {
     }
 
     const submitHandler = () => {
-        axios.post("http://localhost:8080/user/signIn", props.user)
+        axios.post("http://localhost:8080/auth/login", props.user)
         .then((response) => {
-            localStorage.setItem("userCookie", response.data.userName)
-            props.setUser(response.data)
+            localStorage.setItem("token", response.data.jwt)
+            const decodedToken = jwt_decode(response.data.jwt);
+            console.log(decodedToken.userId)
+            const updatedUser = {
+                id: decodedToken.userId,
+                userName: decodedToken.sub,
+                email: decodedToken.email,
+                roles: decodedToken.roles,
+                flock: decodedToken.flock
+            };
+            props.setUser(updatedUser)
+            
             //set use state variable here
             setLoggedIn("loggedIn");
             navigator("/WelcomeBack")
@@ -33,7 +44,7 @@ function SignInBox(props) {
         })
     }
   
-    const renderSignUpBox = () => {
+    const renderSignInBox = () => {
         
         if (loggedIn === "notLoggedIn"){
             return (
@@ -76,7 +87,7 @@ function SignInBox(props) {
     }
 
     return (
-        renderSignUpBox()
+        renderSignInBox()
     )
 }
 

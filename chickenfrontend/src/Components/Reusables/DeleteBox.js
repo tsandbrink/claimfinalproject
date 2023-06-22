@@ -8,13 +8,20 @@ function DeleteBox(props) {
 
     const deleteUser = () => {
         const id = props.user.id
+        let jwtToken = localStorage.getItem('token');
+        const headers = {
+            Authorization: `Bearer ${jwtToken}`
+        };
      //   const contentCartId = props.user.
-        localStorage.removeItem("userCookie")
-        axios.delete(`http://localhost:8080/user/deleteUser/${id}`) 
+        localStorage.removeItem("token")
+        axios.delete(`http://localhost:8080/user/deleteUser/${id}`, {headers}) 
         props.setUser({
+            id: undefined,
             userName: "",
-            password: "",
-            
+            email: "",
+            state: "",
+            zipCode: "",
+            Roles: []
         })
         navigator("/")
     }

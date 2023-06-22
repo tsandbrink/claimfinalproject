@@ -9,14 +9,21 @@ import java.util.List;
 import javax.security.auth.login.AccountNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
     // YOU ONLY AUTOWIRE YOUR REPO OF YOUR OBJECT IN YOUR SERVIES!!!
 	// NOTHING ELSE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     @Autowired
     private UserRepo userRepo;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
     public User save(User user) {
 		// Another predefined function, used to save your objects
@@ -54,7 +61,7 @@ public class UserService {
     }
 
 	public User findByUserName(String userName) {
-		return userRepo.findByUserName(userName);
+		return userRepo.findByUserName2(userName);
 	}
 
 	public List<User> findAll() {
@@ -81,4 +88,12 @@ public class UserService {
         user.setUserFlock(flock);
         return userRepo.save(user);
     }
+
+	@Override
+	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+		System.out.println("In the user details service");
+
+		return userRepo.findByUserName(userName).orElseThrow(() -> new UsernameNotFoundException("user not valid"));
+		
+	}
 }

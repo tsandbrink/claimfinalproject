@@ -16,8 +16,12 @@ function SearchBox(props) {
     }
   
     const submitHandler = () => {
+        let jwtToken = localStorage.getItem('token');
+        const headers = {
+            Authorization: `Bearer ${jwtToken}`
+        };
 
-        axios.get(`http://localhost:8080/chicken/getAverageByStateAndBreed/${searchCriteria.state}/${searchCriteria.breed}`)
+        axios.get(`http://localhost:8080/chicken/getAverageByStateAndBreed/${searchCriteria.state}/${searchCriteria.breed}`, {headers})
         
             .then((response) =>{
                 

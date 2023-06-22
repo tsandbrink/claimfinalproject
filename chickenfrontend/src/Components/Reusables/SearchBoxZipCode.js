@@ -16,8 +16,11 @@ function SearchBox(props) {
     }
   
     const submitHandler = () => {
-
-        axios.get(`http://localhost:8080/chicken/getAverageByZipCodeAndBreed/${searchCriteria.zipCode}/${searchCriteria.breed}`)
+        let jwtToken = localStorage.getItem('token');
+        const headers = {
+            Authorization: `Bearer ${jwtToken}`
+        };
+        axios.get(`http://localhost:8080/chicken/getAverageByZipCodeAndBreed/${searchCriteria.zipCode}/${searchCriteria.breed}`, {headers})
         
             .then((response) =>{
                 

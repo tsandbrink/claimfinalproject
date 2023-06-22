@@ -23,28 +23,36 @@ function App() {
   const[isloading, setIsLoading] = useState(true)
 
   const [user, setUser] = useState({
+    id: undefined,
     userName: "",
-    password: "",
-    userEmail: "",
-    zipCode: ""
+   // email: "",
+    state: "",
+    zipCode: "",
+    userFlock: undefined,
+    //roles: [],
   })
 
   const [updateUser, setUpdateUser] = useState({})
   
   useEffect(() => {
-    const userName = localStorage.getItem("userCookie")
-
-   
-    if (userName !== null){
-      axios.get(`http://localhost:8080/user/findUserByUserName/${userName}`) 
+    let jwtToken = localStorage.getItem("token")
+    
+    if (jwtToken){
+      axios.get('http://localhost:8080/user/getUser', {
+        headers: {
+          'Authorization': `Bearer ${jwtToken}`
+        }
+      }) 
       .then((response) => {
-        setUser(response.data)
-        //console.log(response.data)
-        setIsLoading(false)
+        setUser({
+          ...response.data,
+        //  roles: response.data.roles.map(role => role.authority)
+        });
+       
       })
       .catch((e) => {
       console.log(e)
-      setIsLoading(false)
+      localStorage.removeItem("token");
       })}
     }, [updateUser])
 

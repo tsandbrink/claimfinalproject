@@ -10,9 +10,12 @@ function Flock(props) {
 
 
     const submitHandler = () => {
-        console.log(props.user.userFlock)
         
-        axios.get(`http://localhost:8080/feedNeeds/calculateFeedNeeds/${props.user.userFlock.id}`)
+        let jwtToken = localStorage.getItem('token');
+        const headers = {
+            Authorization: `Bearer ${jwtToken}`
+        };
+        axios.get(`http://localhost:8080/feedNeeds/calculateFeedNeeds/${props.user.flock.id}`, {headers})
         
             .then((response) =>{
                 props.setUpdateUser({})
@@ -56,14 +59,14 @@ function Flock(props) {
 
     const renderContents = () => {
         
-        if(props.user.userFlock === undefined) {
+        if(props.user.flock === undefined) {
 
              
-                navigator("user/SignIn")
+                navigator("/user/SignIn")
             
 
         } else {
-            if (props.user.userFlock.chickensInFlock.length !== 0){
+            if (props.user.flock.chickensInFlock.length !== 0){
                 
                 return (
                     <table className='flex-column border margin'>
@@ -76,7 +79,7 @@ function Flock(props) {
                              <th className='fill border'>Eggs/Week</th>
                              <th className='fill border'>Edit Info</th>
                          </tr>
-                        {props.user.userFlock.chickensInFlock.map((chicken) => {
+                        {props.user.flock.chickensInFlock.map((chicken) => {
                             
                            if (chicken.isDead === false && chicken.sex === "female"){
                             let eggAverage = getChickenEggAverage(chicken)
@@ -140,6 +143,7 @@ function Flock(props) {
 
 
     const render = () => {
+        console.log(props.user)
         if (props.user.id !== undefined){
             return (
                 <div className='flex-column fill center background'>
@@ -152,7 +156,7 @@ function Flock(props) {
                         </div>
                     </div>
                     <div className='flex-column pageBody container scroll margin flockBox'>
-                        <h2 className='center'>{props.user.userName}'s Flock:</h2>
+                        <h2 className='center'>{props.user.username}'s Flock:</h2>
                         {renderContents()}
                     </div>
                     
